@@ -8,9 +8,6 @@ importers:
 
   .:
     dependencies:
-      '@types/express':
-        specifier: ^5.0.0
-        version: 5.0.3
       express:
         specifier: ^4.21.2
         version: 4.21.2
@@ -21,6 +18,9 @@ importers:
         specifier: ^2.2.0
         version: 2.2.0
     devDependencies:
+      '@types/express':
+        specifier: ^5.0.0
+        version: 5.0.3
       '@types/multer':
         specifier: ^2.1.0
         version: 2.1.0

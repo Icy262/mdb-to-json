@@ -29,16 +29,32 @@ app.use((req, res, next) => {
 app.post(
 	'/get-tables',
 	upload.single('mdb_file'),
-	// express.raw({
-	// 	type: 'application/octet-stream',
-	// 	limit: '50mb'
-	// }),
 	(req, res) => {
 		try {
 			const reader = new MDBReader(req.file);
 
 			res.status(200).json({
 				tables: reader?.getTableNames()
+			});
+		} catch (err: unknown) {
+			res.status(400).json({
+				message: `Failed to read .mdb file: ${err instanceof Error ? err.message : String(err)}`
+			});
+		}
+	}
+);
+
+app.post(
+	'/get-from',
+	upload.single('mdb_file'),
+	(req, res) => {
+		try {
+			const reader = new MDBReader(req.file);
+
+			res.status(200).json({
+				records: reader?.getTable(req.body.table_name)
+					.getData()
+					.map(row => row[req.body.column_name])
 			});
 		} catch (err: unknown) {
 			res.status(400).json({

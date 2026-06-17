@@ -29,10 +29,10 @@ app.post(
 	upload.single('mdb_file'),
 	(req, res) => {
 		try {
-			const reader = new MDBReader(req.file);
+			const reader = new MDBReader(req.file!.buffer);
 
 			res.status(200).json({
-				tables: reader?.getTableNames()
+				tables: reader.getTableNames()
 			});
 		} catch (err: unknown) {
 			res.status(400).json({
@@ -47,10 +47,10 @@ app.post(
 	upload.single('mdb_file'),
 	(req, res) => {
 		try {
-			const reader = new MDBReader(req.file);
+			const reader = new MDBReader(req.file!.buffer);
 
 			res.status(200).json({
-				records: reader?.getTable(req.body.table_name)
+				records: reader.getTable(req.body.table_name)
 					.getData()
 					.map(row => row[req.body.column_name])
 			});

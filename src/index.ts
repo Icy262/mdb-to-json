@@ -23,7 +23,10 @@ app.use((req, res, next) => {
 
 app.post(
 	'/get-tables',
-	express.raw({ limit: '50mb' }),
+	express.raw({
+		type: 'application/octet-stream',
+		limit: '50mb'
+	}),
 	(req, res) => {
 		try {
 			const reader = new MDBReader(req.body);

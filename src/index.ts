@@ -1,14 +1,12 @@
-import e from 'express'
 import express from 'express'
 import path from 'path'
 import { fileURLToPath } from 'url'
 import MDBReader from 'mdb-reader'
+import multer from 'multer'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
-const express = require('express')
-const multer  = require('multer')
 const storage = multer.memoryStorage()
 const upload = multer({ storage: storage })
 

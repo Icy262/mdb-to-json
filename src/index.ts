@@ -7,6 +7,11 @@ import MDBReader from 'mdb-reader'
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
+const express = require('express')
+const multer  = require('multer')
+const storage = multer.memoryStorage()
+const upload = multer({ storage: storage })
+
 const app = express()
 
 app.use((req, res, next) => {
@@ -23,13 +28,14 @@ app.use((req, res, next) => {
 
 app.post(
 	'/get-tables',
-	express.raw({
-		type: 'application/octet-stream',
-		limit: '50mb'
-	}),
+	upload.single('mdb_file'),
+	// express.raw({
+	// 	type: 'application/octet-stream',
+	// 	limit: '50mb'
+	// }),
 	(req, res) => {
 		try {
-			const reader = new MDBReader(req.body);
+			const reader = new MDBReader(req.file);
 
 			res.status(200).json({
 				tables: reader?.getTableNames()

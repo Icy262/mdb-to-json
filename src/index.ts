@@ -9,11 +9,11 @@ const __dirname = path.dirname(__filename)
 const app = express()
 
 app.use((req, res, next) => {
-	res.header("Access-Control-Allow-Origin", "*");
-	res.header("Access-Control-Allow-Methods", "POST, OPTIONS");
-	res.header("Access-Control-Allow-Headers", "Content-Type");
+	res.header('Access-Control-Allow-Origin', '*');
+	res.header('Access-Control-Allow-Methods', 'POST, OPTIONS');
+	res.header('Access-Control-Allow-Headers', 'Content-Type');
 
-	if (req.method === "OPTIONS") {
+	if (req.method === 'OPTIONS') {
 		return res.sendStatus(200);
 	}
 

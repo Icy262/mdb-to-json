@@ -118,7 +118,7 @@ app.post(
 					} catch (err: unknown) {
 						return {
 							url: mdb_url,
-							tables: null
+							records: null
 						};
 					}
 				})

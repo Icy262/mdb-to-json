@@ -67,7 +67,8 @@ app.post(
 	express.json(),
 	async (req, res) => {
 		try {
-			const data = Promise.all(
+			console.log(req.body);
+			const data = await Promise.all(
 				req.body.mdb_urls.map(async (mdb_url) => {
 					try {
 						const mdb_response = await fetch(mdb_url);

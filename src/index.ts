@@ -87,7 +87,7 @@ app.post(
 				})
 			);
 
-			res.status(400).json(data);
+			res.status(200).json(data);
 		} catch (err: unknown) {
 			res.status(400).json({
 				message: `Request format invalid: ${err instanceof Error ? err.message : String(err)}`

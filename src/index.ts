@@ -2,13 +2,9 @@ import express from 'express'
 import path from 'path'
 import { fileURLToPath } from 'url'
 import MDBReader from 'mdb-reader'
-import multer from 'multer'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
-
-const storage = multer.memoryStorage()
-const upload = multer({ storage: storage })
 
 const app = express()
 
@@ -26,13 +22,15 @@ app.use((req, res, next) => {
 
 app.post(
 	'/get-tables',
-	upload.single('mdb_file'),
-	(req, res) => {
+	express.json(),
+	async (req, res) => {
 		try {
-			const reader = new MDBReader(req.file!.buffer);
+			const mdb_response = await fetch(req.body.mdb_url);
+			const mdb_buffer = await mdb_response.arrayBuffer();
+			const mdb_reader = new MDBReader(Buffer.from(mdb_buffer));
 
 			res.status(200).json({
-				tables: reader.getTableNames()
+				tables: mdb_reader.getTableNames()
 			});
 		} catch (err: unknown) {
 			res.status(400).json({
@@ -44,13 +42,15 @@ app.post(
 
 app.post(
 	'/get-from',
-	upload.single('mdb_file'),
-	(req, res) => {
+	express.json(),
+	async (req, res) => {
 		try {
-			const reader = new MDBReader(req.file!.buffer);
+			const mdb_response = await fetch(req.body.mdb_url);
+			const mdb_buffer = await mdb_response.arrayBuffer();
+			const mdb_reader = new MDBReader(Buffer.from(mdb_buffer));
 
 			res.status(200).json({
-				records: reader.getTable(req.body.table_name)
+				records: mdb_reader.getTable(req.body.table_name)
 					.getData()
 					.map(row => row[req.body.column_name])
 			});

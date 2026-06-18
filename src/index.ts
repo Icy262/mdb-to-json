@@ -96,4 +96,41 @@ app.post(
 	}
 );
 
+app.post(
+	'/batch/get-from',
+	express.json(),
+	async (req, res) => {
+		try {
+			const data = await Promise.all(
+				req.body.mdb_urls.map(async (mdb_url) => {
+					try {
+						const mdb_response = await fetch(mdb_url);
+						const mdb_buffer = await mdb_response.arrayBuffer();
+						const mdb_reader = new MDBReader(Buffer.from(mdb_buffer));
+
+						return {
+							url: mdb_url,
+							records: mdb_reader
+								.getTable(req.body.table_name)
+								.getData()
+								.map(row => row[req.body.column_name])
+						}
+					} catch (err: unknown) {
+						return {
+							url: mdb_url,
+							tables: null
+						};
+					}
+				})
+			);
+
+			res.status(200).json(data);
+		} catch (err: unknown) {
+			res.status(400).json({
+				message: `Request format invalid: ${err instanceof Error ? err.message : String(err)}`
+			});
+		}
+	}
+);
+
 export default app

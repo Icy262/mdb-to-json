@@ -51,8 +51,7 @@ app.post(
 
 			res.status(200).json({
 				records: mdb_reader.getTable(req.body.table_name)
-					.getData()
-					.map(row => row[req.body.column_name])
+					.getData(req.body.column_names)
 			});
 		} catch (err: unknown) {
 			res.status(400).json({
@@ -112,8 +111,7 @@ app.post(
 							url: mdb_url,
 							records: mdb_reader
 								.getTable(req.body.table_name)
-								.getData()
-								.map(row => row[req.body.column_name])
+								.getData(req.body.column_names)
 						}
 					} catch (err: unknown) {
 						return {
